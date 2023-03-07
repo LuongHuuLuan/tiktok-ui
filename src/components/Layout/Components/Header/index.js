@@ -1,30 +1,25 @@
-import { useState, useEffect } from 'react';
 import className from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-    faCircleXmark,
-    faSpinner,
-    faMagnifyingGlass,
     faEllipsisVertical,
     faEarthAsia,
     faCircleQuestion,
     faKeyboard,
-    faCloudUpload,
     faUser,
     faCoins,
     faGear,
     faSignOut,
 } from '@fortawesome/free-solid-svg-icons';
 import Tippy from '@tippyjs/react';
-import HeadlessTippy from '@tippyjs/react/headless';
 import 'tippy.js/dist/tippy.css';
+import { UploadIcon } from '~/components/Icons';
 
 import styles from './Header.module.scss';
 import images from '~/assets/images';
-import { Wrapper as PopperWraper } from '~/components/Popper';
-import AccountItem from '../AccountItem';
 import Button from '~/components/Button';
 import Menu from '~/components/Popper/Menu';
+import Image from '~/components/Image';
+import Search from '../Search';
 
 const cx = className.bind(styles);
 
@@ -60,14 +55,8 @@ const MENU_ITEMS = [
 ];
 
 function Header() {
-    const [searchResult, setSearchResult] = useState([]);
     const currentUser = true;
 
-    useEffect(() => {
-        setTimeout(() => {
-            setSearchResult([]);
-        }, 0);
-    });
     const handleMenuChange = (menuItem) => {
         switch (menuItem.type) {
             case 'language':
@@ -107,39 +96,14 @@ function Header() {
         <header className={cx('wrapper')}>
             <div className={cx('inner')}>
                 <img src={images.logo} alt="Tiktok" />
-                <HeadlessTippy
-                    visible={searchResult.length > 0}
-                    interactive
-                    render={(attrs) => (
-                        <div className={cx('search-result')} tabIndex="-1" {...attrs}>
-                            <PopperWraper>
-                                <h4 className={cx('search-title')}>Accounts</h4>
-                                <AccountItem />
-                                <AccountItem />
-                                <AccountItem />
-                            </PopperWraper>
-                        </div>
-                    )}
-                >
-                    <div className={cx('search')}>
-                        <input placeholder="Search accounts and videos" spellCheck={false} />
-
-                        <button>
-                            <FontAwesomeIcon className={cx('clear')} icon={faCircleXmark} />
-                        </button>
-                        <FontAwesomeIcon className={cx('loading')} icon={faSpinner} />
-
-                        <button className={cx('search-btn')}>
-                            <FontAwesomeIcon icon={faMagnifyingGlass} />
-                        </button>
-                    </div>
-                </HeadlessTippy>
+                {/* {search} */}
+                <Search />
                 <div className={cx('action')}>
                     {currentUser ? (
                         <>
                             <Tippy content="Upload video" delay={[0, 200]} placement="bottom">
                                 <button className={cx('action-btn')}>
-                                    <FontAwesomeIcon icon={faCloudUpload} />
+                                    <UploadIcon />
                                 </button>
                             </Tippy>
                         </>
@@ -151,10 +115,11 @@ function Header() {
                     )}
                     <Menu items={currentUser ? userMenu : MENU_ITEMS} onChange={handleMenuChange}>
                         {currentUser ? (
-                            <img
+                            <Image
                                 className={cx('user-avatar')}
                                 alt="Nguyễn Văn A"
                                 src="https://toigingiuvedep.vn/wp-content/uploads/2021/01/avatar-dep-cute.jpg"
+                                // fallback="https://lh3.googleusercontent.com/blogger_img_proxy/AHs97-m57B0WY4efnFN8wCHVjs4wTLmknrUoMmqajUpb8HY4kUkaCxMN2TR0bh5Tgyxs_wczEqYrf8vIhGut-_TAEonAhGU=w1200-h630-p-k-no-nu"
                             />
                         ) : (
                             <button className={cx('more-btn')}>
